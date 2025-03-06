@@ -1,0 +1,41 @@
+name: Gestor de Clientes Sky
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repositorio
+      uses: actions/checkout@v3
+      
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Ejecutar test básico
+      run: |
+        python gestor_clientes.py listar
+        
+    - name: Crear cliente de prueba
+      run: |
+        python gestor_clientes.py crear "Cliente1" "Calle Prueba 123" "555-1234" "TV Básico"
+        
+    - name: Verificar cliente creado
+      run: |
+        python gestor_clientes.py ver "Cliente1"
+        
+    - name: Agregar servicio
+      run: |
+        python gestor_clientes.py agregar "Cliente1" "Internet 100MB"
+        
+    - name: Verificar servicio agregado
+      run: |
+        python gestor_clientes.py ver "Cliente1"
